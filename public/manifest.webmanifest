@@ -1,0 +1,17 @@
+{
+  "name": "MovieForToday",
+  "short_name": "MovieToday",
+  "description": "Jednym kliknięciem wybierz 10 filmów na dzisiaj.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#382633",
+  "theme_color": "#382633",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
