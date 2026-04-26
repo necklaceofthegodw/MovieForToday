@@ -8,6 +8,8 @@ import { setMovieCardStatus, type MovieCardStatus } from "./lib/movieActions";
 import { loadLastResults, loadPreferences, saveLastResults, savePreferences } from "./lib/storage";
 import type { MovieSummary, Preferences } from "./types";
 
+type SpinPhase = "idle" | "spinning" | "settling";
+
 function App() {
   const [preferences, setPreferences] = useState<Preferences>(() => loadPreferences());
   const [movies, setMovies] = useState<MovieSummary[]>(() => loadLastResults());
@@ -15,6 +17,7 @@ function App() {
   const [selectedMovie, setSelectedMovie] = useState<MovieSummary | null>(null);
   const [movieStatuses, setMovieStatuses] = useState<Record<number, Exclude<MovieCardStatus, null>>>({});
   const [loading, setLoading] = useState(false);
+  const [spinPhase, setSpinPhase] = useState<SpinPhase>("idle");
   const [notice, setNotice] = useState("");
 
   useEffect(() => {
@@ -49,10 +52,14 @@ function App() {
     }
 
     setLoading(true);
+    setSpinPhase("spinning");
     setNotice("");
     try {
       const previousMovieIds = movies.map((movie) => movie.id);
-      const response = await getRecommendations(preferences, previousMovieIds);
+      const [response] = await Promise.all([
+        getRecommendations(preferences, previousMovieIds),
+        new Promise((resolve) => window.setTimeout(resolve, 1500)),
+      ]);
       setMovies(response.movies);
       setMovieStatuses({});
       if (response.movies.length === 0) {
@@ -63,7 +70,11 @@ function App() {
     } catch (error) {
       setNotice(error instanceof Error ? error.message : "Nie udało się wygenerować filmów.");
     } finally {
-      window.setTimeout(() => setLoading(false), 500);
+      setSpinPhase("settling");
+      window.setTimeout(() => {
+        setLoading(false);
+        setSpinPhase("idle");
+      }, 520);
     }
   };
 
@@ -95,7 +106,7 @@ function App() {
 
       <FilmStrip
         movies={movies}
-        spinning={loading}
+        spinPhase={spinPhase}
         movieStatuses={movieStatuses}
         onOpen={setSelectedMovie}
         onSetMovieStatus={setVisibleMovieStatus}

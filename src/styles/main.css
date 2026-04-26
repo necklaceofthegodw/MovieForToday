@@ -222,10 +222,29 @@ a {
   grid-auto-columns: minmax(260px, 300px);
   gap: 16px;
   min-height: 520px;
+  transform: translateX(0);
+  filter: blur(0);
+  will-change: transform, filter;
 }
 
 .film-strip.spinning .strip-track {
-  animation: film-run 0.75s linear infinite;
+  animation: film-run 0.28s linear infinite;
+  filter: blur(5px);
+  pointer-events: none;
+}
+
+.film-strip.settling .strip-track {
+  animation: film-settle 0.52s cubic-bezier(0.16, 1, 0.3, 1) both;
+  pointer-events: none;
+}
+
+.film-strip.spinning .empty-frame {
+  animation: empty-reel-pulse 0.28s linear infinite;
+  filter: blur(3px);
+}
+
+.film-strip.settling .empty-frame {
+  animation: empty-reel-settle 0.52s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .film-strip.empty {
@@ -830,6 +849,41 @@ input[type="range"] {
   }
 }
 
+@keyframes film-settle {
+  0% {
+    transform: translateX(-132px) scale(1.015);
+    filter: blur(5px);
+  }
+  68% {
+    transform: translateX(10px) scale(1.002);
+    filter: blur(1.2px);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes empty-reel-pulse {
+  from {
+    transform: translateX(-8px);
+  }
+  to {
+    transform: translateX(8px);
+  }
+}
+
+@keyframes empty-reel-settle {
+  0% {
+    transform: translateX(10px) scale(1.015);
+    filter: blur(3px);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    filter: blur(0);
+  }
+}
+
 @media (max-width: 760px) {
   .app-shell {
     width: min(100% - 20px, 560px);
@@ -865,7 +919,11 @@ input[type="range"] {
   }
 
   .film-strip.spinning .strip-track {
-    animation: film-run-mobile 0.75s linear infinite;
+    animation: film-run-mobile 0.28s linear infinite;
+  }
+
+  .film-strip.settling .strip-track {
+    animation: film-settle-mobile 0.52s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
   .movie-frame {
@@ -907,6 +965,21 @@ input[type="range"] {
   }
   to {
     transform: translateY(-120px);
+  }
+}
+
+@keyframes film-settle-mobile {
+  0% {
+    transform: translateY(-108px) scale(1.015);
+    filter: blur(5px);
+  }
+  68% {
+    transform: translateY(8px) scale(1.002);
+    filter: blur(1.2px);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    filter: blur(0);
   }
 }
 

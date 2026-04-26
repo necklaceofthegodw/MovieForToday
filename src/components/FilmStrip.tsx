@@ -5,13 +5,13 @@ import { MovieCard } from "./MovieCard";
 
 type FilmStripProps = {
   movies: MovieSummary[];
-  spinning: boolean;
+  spinPhase: "idle" | "spinning" | "settling";
   movieStatuses: Record<number, Exclude<MovieCardStatus, null>>;
   onOpen: (movie: MovieSummary) => void;
   onSetMovieStatus: (movieId: number, status: MovieCardStatus) => void;
 };
 
-export function FilmStrip({ movies, spinning, movieStatuses, onOpen, onSetMovieStatus }: FilmStripProps) {
+export function FilmStrip({ movies, spinPhase, movieStatuses, onOpen, onSetMovieStatus }: FilmStripProps) {
   const stripRef = useRef<HTMLElement | null>(null);
 
   const handleWheel = (event: WheelEvent<HTMLElement>) => {
@@ -32,7 +32,7 @@ export function FilmStrip({ movies, spinning, movieStatuses, onOpen, onSetMovieS
     return (
       <section
         ref={stripRef}
-        className={`film-strip empty ${spinning ? "spinning" : ""}`}
+        className={`film-strip empty ${spinPhase}`}
         aria-live="polite"
         onWheel={handleWheel}
       >
@@ -46,7 +46,7 @@ export function FilmStrip({ movies, spinning, movieStatuses, onOpen, onSetMovieS
   }
 
   return (
-    <section ref={stripRef} className={`film-strip ${spinning ? "spinning" : ""}`} aria-live="polite" onWheel={handleWheel}>
+    <section ref={stripRef} className={`film-strip ${spinPhase}`} aria-live="polite" onWheel={handleWheel}>
       <div className="strip-track">
         {movies.map((movie) => (
           <MovieCard
