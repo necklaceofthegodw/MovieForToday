@@ -214,6 +214,7 @@ a {
     linear-gradient(180deg, #0d090c, #1d111a);
   box-shadow: var(--shadow);
   scrollbar-color: var(--lime) rgba(255, 255, 255, 0.1);
+  scroll-behavior: auto;
 }
 
 .strip-track {
@@ -222,19 +223,18 @@ a {
   grid-auto-columns: minmax(260px, 300px);
   gap: 16px;
   min-height: 520px;
-  transform: translateX(0);
   filter: blur(0);
-  will-change: transform, filter;
+  transition: filter 240ms ease;
+  will-change: filter;
 }
 
 .film-strip.spinning .strip-track {
-  animation: film-run 0.28s linear infinite;
   filter: blur(5px);
   pointer-events: none;
 }
 
 .film-strip.settling .strip-track {
-  animation: film-settle 0.52s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: film-focus-in 0.52s cubic-bezier(0.16, 1, 0.3, 1) both;
   pointer-events: none;
 }
 
@@ -840,26 +840,14 @@ input[type="range"] {
   margin-top: 22px;
 }
 
-@keyframes film-run {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-180px);
-  }
-}
-
-@keyframes film-settle {
+@keyframes film-focus-in {
   0% {
-    transform: translateX(-132px) scale(1.015);
     filter: blur(5px);
   }
   68% {
-    transform: translateX(10px) scale(1.002);
     filter: blur(1.2px);
   }
   100% {
-    transform: translateX(0) scale(1);
     filter: blur(0);
   }
 }
@@ -911,6 +899,12 @@ input[type="range"] {
       linear-gradient(180deg, #0d090c, #1d111a);
   }
 
+  .film-strip.spinning,
+  .film-strip.settling {
+    max-height: min(76vh, 720px);
+    overflow-y: hidden;
+  }
+
   .strip-track {
     grid-auto-flow: row;
     grid-auto-columns: auto;
@@ -919,11 +913,11 @@ input[type="range"] {
   }
 
   .film-strip.spinning .strip-track {
-    animation: film-run-mobile 0.28s linear infinite;
+    animation: none;
   }
 
   .film-strip.settling .strip-track {
-    animation: film-settle-mobile 0.52s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: film-focus-in 0.52s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
   .movie-frame {
@@ -956,30 +950,6 @@ input[type="range"] {
 
   .detail-backdrop {
     max-height: 260px;
-  }
-}
-
-@keyframes film-run-mobile {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(-120px);
-  }
-}
-
-@keyframes film-settle-mobile {
-  0% {
-    transform: translateY(-108px) scale(1.015);
-    filter: blur(5px);
-  }
-  68% {
-    transform: translateY(8px) scale(1.002);
-    filter: blur(1.2px);
-  }
-  100% {
-    transform: translateY(0) scale(1);
-    filter: blur(0);
   }
 }
 
