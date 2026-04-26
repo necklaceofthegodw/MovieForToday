@@ -85,13 +85,6 @@ function App() {
       </header>
 
       <section className="hero-panel">
-        <div>
-          <p className="eyebrow">Film strip carousel</p>
-          <h2>Wciśnij przycisk, a taśma wybierze seans.</h2>
-          <p>
-            Rekomendacje bazują na Twoich gatunkach, TOP aktorach, VOD, czasie trwania, ocenie i lokalnej historii.
-          </p>
-        </div>
         <button className="generate-button" type="button" onClick={generateMovies} disabled={loading}>
           <RefreshCcw size={22} />
           {loading ? "Kręcę taśmę..." : "Wybierz 10 filmów"}

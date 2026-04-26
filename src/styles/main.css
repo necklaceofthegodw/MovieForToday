@@ -99,9 +99,9 @@ a {
 }
 
 .hero-panel {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 24px;
   padding: 22px;
   margin-bottom: 24px;
@@ -846,8 +846,15 @@ input[type="range"] {
   }
 
   .film-strip {
-    overflow: visible;
-    padding: 22px 18px;
+    overflow-x: hidden;
+    overflow-y: visible;
+    padding: 18px 32px;
+    background:
+      linear-gradient(180deg, transparent 0 16px, rgba(243, 247, 232, 0.9) 16px 28px, transparent 28px 52px) top
+        left / 16px 52px repeat-y,
+      linear-gradient(180deg, transparent 0 16px, rgba(243, 247, 232, 0.9) 16px 28px, transparent 28px 52px) top
+        right / 16px 52px repeat-y,
+      linear-gradient(180deg, #0d090c, #1d111a);
   }
 
   .strip-track {
