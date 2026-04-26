@@ -1,4 +1,4 @@
-import type { MovieDetail, MovieReview, MovieSummary, Person, Preferences, WatchProvider } from "../src/types";
+import type { MovieDetail, MovieReview, MovieSummary, Person, Preferences, WatchProvider } from "../src/types.js";
 
 const TMDB_BASE_URL = "https://api.themoviedb.org/3";
 const token = process.env.TMDB_READ_ACCESS_TOKEN;

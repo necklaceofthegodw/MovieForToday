@@ -1,5 +1,5 @@
-import { samplePeople } from "../_sample";
-import { hasTmdbToken, mapPerson, tmdbFetch } from "../_tmdb";
+import { samplePeople } from "../_sample.js";
+import { hasTmdbToken, mapPerson, tmdbFetch } from "../_tmdb.js";
 
 export default async function handler(req: any, res: any) {
   const query = String(req.query.query || "").trim();

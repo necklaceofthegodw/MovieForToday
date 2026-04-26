@@ -1,7 +1,7 @@
-import { rankMovies, rankMoviesWithHistoryFallback } from "../src/lib/recommendation";
-import type { MovieSummary, Preferences, WatchProvider } from "../src/types";
-import { sampleMovies } from "./_sample";
-import { buildDiscoverParams, hasTmdbToken, mapMovie, mapProvider, mapPerson, tmdbFetch } from "./_tmdb";
+import { rankMovies, rankMoviesWithHistoryFallback } from "../src/lib/recommendation.js";
+import type { MovieSummary, Preferences, WatchProvider } from "../src/types.js";
+import { sampleMovies } from "./_sample.js";
+import { buildDiscoverParams, hasTmdbToken, mapMovie, mapProvider, mapPerson, tmdbFetch } from "./_tmdb.js";
 
 async function enrichMovie(movie: MovieSummary, preferences: Preferences) {
   const [detail, credits, providers] = await Promise.all([

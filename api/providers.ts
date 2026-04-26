@@ -1,5 +1,5 @@
-import { sampleProviders } from "./_sample";
-import { hasTmdbToken, mapProvider, tmdbFetch } from "./_tmdb";
+import { sampleProviders } from "./_sample.js";
+import { hasTmdbToken, mapProvider, tmdbFetch } from "./_tmdb.js";
 
 const preferredProviderNames = [
   "Netflix",

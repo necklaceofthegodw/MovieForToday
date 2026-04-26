@@ -1,5 +1,5 @@
-import { sampleDetail } from "../_sample";
-import { hasTmdbToken, mapDetail, tmdbFetch } from "../_tmdb";
+import { sampleDetail } from "../_sample.js";
+import { hasTmdbToken, mapDetail, tmdbFetch } from "../_tmdb.js";
 
 export default async function handler(req: any, res: any) {
   const id = Number(req.query.id);

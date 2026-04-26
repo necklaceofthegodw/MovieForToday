@@ -1,4 +1,4 @@
-import type { MovieDetail, MovieSummary, Person, WatchProvider } from "../src/types";
+import type { MovieDetail, MovieSummary, Person, WatchProvider } from "../src/types.js";
 
 export const sampleProviders: WatchProvider[] = [
   { id: 8, name: "Netflix", logoPath: null },
