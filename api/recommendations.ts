@@ -45,32 +45,43 @@ export default async function handler(req: any, res: any) {
   }
 
   if (!hasTmdbToken()) {
-    const demoMovies = sampleMovies
-      .filter((movie) => !previousMovieIds.has(movie.id))
-      .concat(sampleMovies.filter((movie) => previousMovieIds.has(movie.id)));
-    return res.status(200).json({ movies: rankMoviesWithHistoryFallback(demoMovies, preferences, 10), demo: true });
+    const freshMovies = rankMovies(sampleMovies.filter((movie) => !previousMovieIds.has(movie.id)), preferences, 10);
+    const repeatMovies = rankMovies(sampleMovies.filter((movie) => previousMovieIds.has(movie.id)), preferences, 10);
+    const movies = [...freshMovies, ...repeatMovies.filter((movie) => !freshMovies.some((fresh) => fresh.id === movie.id))].slice(0, 10);
+    return res.status(200).json({ movies, demo: true });
   }
 
   try {
-    const candidates = new Map<number, MovieSummary>();
+    const freshCandidates = new Map<number, MovieSummary>();
+    const repeatCandidates = new Map<number, MovieSummary>();
 
-    for (let relaxation = 0; relaxation < 4 && candidates.size < 35; relaxation += 1) {
+    for (let relaxation = 0; relaxation < 4 && freshCandidates.size < 35; relaxation += 1) {
       const pages = [1, 2, 3].sort(() => Math.random() - 0.5);
       for (const page of pages) {
         const data = await tmdbFetch<{ results: any[] }>("/discover/movie", buildDiscoverParams(preferences, page, relaxation));
-        data.results
-          .map(mapMovie)
-          .filter((movie) => !previousMovieIds.has(movie.id))
-          .forEach((movie) => candidates.set(movie.id, movie));
+        data.results.map(mapMovie).forEach((movie) => {
+          if (previousMovieIds.has(movie.id)) {
+            repeatCandidates.set(movie.id, movie);
+          } else {
+            freshCandidates.set(movie.id, movie);
+          }
+        });
       }
     }
 
-    const enriched = await Promise.all(Array.from(candidates.values()).slice(0, 35).map((movie) => enrichMovie(movie, preferences)));
+    const freshCandidateList = Array.from(freshCandidates.values());
+    const repeatCandidateList = Array.from(repeatCandidates.values());
+    const enriched = await Promise.all(freshCandidateList.slice(0, 35).map((movie) => enrichMovie(movie, preferences)));
     let movies = rankMovies(enriched, preferences, 10);
 
     if (movies.length < 10) {
-      const extra = rankMovies(Array.from(candidates.values()), preferences, 10);
-      movies = rankMovies([...movies, ...extra], preferences, 10);
+      const extra = rankMovies(freshCandidateList, preferences, 10);
+      movies = [...movies, ...extra.filter((movie) => !movies.some((selected) => selected.id === movie.id))].slice(0, 10);
+    }
+
+    if (movies.length < 10) {
+      const repeats = rankMovies(repeatCandidateList, preferences, 10);
+      movies = [...movies, ...repeats.filter((movie) => !movies.some((selected) => selected.id === movie.id))].slice(0, 10);
     }
 
     return res.status(200).json({ movies: movies.length > 0 ? movies : rankMoviesWithHistoryFallback(enriched, preferences, 10), demo: false });

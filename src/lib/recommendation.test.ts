@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { rankMovies, rankMoviesWithHistoryFallback, scoreMovie } from "./recommendation";
+import { mergeRecommendationHistory, rankMovies, rankMoviesWithHistoryFallback, scoreMovie } from "./recommendation";
 import { DEFAULT_PREFERENCES, type MovieSummary } from "../types";
 
 const baseMovie: MovieSummary = {
@@ -44,5 +44,18 @@ describe("recommendation scoring", () => {
 
     expect(ranked).toHaveLength(1);
     expect(ranked[0].title).toBe("Test Movie");
+  });
+
+  it("keeps newest recommendation ids first without duplicates", () => {
+    const history = mergeRecommendationHistory(
+      [2, 3, 4],
+      [
+        { ...baseMovie, id: 1 },
+        { ...baseMovie, id: 3 },
+      ],
+      4,
+    );
+
+    expect(history).toEqual([1, 3, 2, 4]);
   });
 });

@@ -1,7 +1,14 @@
 import type { MovieSummary, Preferences } from "../types";
 
+export const RECOMMENDATION_HISTORY_LIMIT = 120;
+
 export function toggleNumber(values: number[], value: number) {
   return values.includes(value) ? values.filter((item) => item !== value) : [...values, value];
+}
+
+export function mergeRecommendationHistory(previousMovieIds: number[], movies: MovieSummary[], limit = RECOMMENDATION_HISTORY_LIMIT) {
+  const merged = [...movies.map((movie) => movie.id), ...previousMovieIds];
+  return Array.from(new Set(merged)).slice(0, limit);
 }
 
 export function scoreMovie(movie: MovieSummary, preferences: Preferences) {

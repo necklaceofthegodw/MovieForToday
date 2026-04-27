@@ -5,7 +5,15 @@ import { MovieDetailModal } from "./components/MovieDetailModal";
 import { PreferencePanel } from "./components/PreferencePanel";
 import { getRecommendations } from "./lib/api";
 import { setMovieCardStatus, type MovieCardStatus } from "./lib/movieActions";
-import { loadLastResults, loadPreferences, saveLastResults, savePreferences } from "./lib/storage";
+import { mergeRecommendationHistory } from "./lib/recommendation";
+import {
+  loadLastResults,
+  loadPreferences,
+  loadRecommendationHistory,
+  saveLastResults,
+  savePreferences,
+  saveRecommendationHistory,
+} from "./lib/storage";
 import type { MovieSummary, Preferences } from "./types";
 
 type SpinPhase = "idle" | "spinning" | "settling";
@@ -13,6 +21,7 @@ type SpinPhase = "idle" | "spinning" | "settling";
 function App() {
   const [preferences, setPreferences] = useState<Preferences>(() => loadPreferences());
   const [movies, setMovies] = useState<MovieSummary[]>(() => loadLastResults());
+  const [recommendationHistory, setRecommendationHistory] = useState<number[]>(() => loadRecommendationHistory());
   const [settingsOpen, setSettingsOpen] = useState(() => !loadPreferences().completed);
   const [selectedMovie, setSelectedMovie] = useState<MovieSummary | null>(null);
   const [movieStatuses, setMovieStatuses] = useState<Record<number, Exclude<MovieCardStatus, null>>>({});
@@ -44,6 +53,10 @@ function App() {
   useEffect(() => {
     saveLastResults(movies);
   }, [movies]);
+
+  useEffect(() => {
+    saveRecommendationHistory(recommendationHistory);
+  }, [recommendationHistory]);
 
   const updatePreferences = (next: Preferences) => {
     setPreferences(next);
@@ -91,12 +104,13 @@ function App() {
     setSpinPhase("spinning");
     setNotice("");
     try {
-      const previousMovieIds = movies.map((movie) => movie.id);
+      const previousMovieIds = Array.from(new Set([...movies.map((movie) => movie.id), ...recommendationHistory]));
       const [response] = await Promise.all([
         getRecommendations(preferences, previousMovieIds),
         new Promise((resolve) => window.setTimeout(resolve, 1500)),
       ]);
       setMovies(response.movies);
+      setRecommendationHistory((current) => mergeRecommendationHistory(previousMovieIds.length > 0 ? previousMovieIds : current, response.movies));
       setMovieStatuses({});
       if (response.movies.length === 0) {
         setNotice("No matches for this profile yet. Try adding streaming services or relaxing max playtime and minimum rating.");

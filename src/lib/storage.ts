@@ -2,6 +2,7 @@ import { DEFAULT_PREFERENCES, type MovieSummary, type Preferences } from "../typ
 
 const PREFS_KEY = "movie-for-today/preferences";
 const LAST_RESULTS_KEY = "movie-for-today/last-results";
+const RECOMMENDATION_HISTORY_KEY = "movie-for-today/recommendation-history";
 
 export function loadPreferences(): Preferences {
   try {
@@ -27,4 +28,17 @@ export function loadLastResults(): MovieSummary[] {
 
 export function saveLastResults(movies: MovieSummary[]) {
   localStorage.setItem(LAST_RESULTS_KEY, JSON.stringify(movies));
+}
+
+export function loadRecommendationHistory(): number[] {
+  try {
+    const history = JSON.parse(localStorage.getItem(RECOMMENDATION_HISTORY_KEY) || "[]") as unknown;
+    return Array.isArray(history) ? history.filter((id) => Number.isFinite(id)) : [];
+  } catch {
+    return [];
+  }
+}
+
+export function saveRecommendationHistory(movieIds: number[]) {
+  localStorage.setItem(RECOMMENDATION_HISTORY_KEY, JSON.stringify(movieIds));
 }
