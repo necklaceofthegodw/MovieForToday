@@ -53,6 +53,7 @@ export type Preferences = {
   blockedGenreIds: number[];
   topActors: Person[];
   providerIds: number[];
+  minReleaseYear: number;
   maxRuntime: number;
   minRating: number;
   watchedMovieIds: number[];
@@ -65,6 +66,7 @@ export const DEFAULT_PREFERENCES: Preferences = {
   blockedGenreIds: [],
   topActors: [],
   providerIds: [],
+  minReleaseYear: 1980,
   maxRuntime: 150,
   minRating: 6.5,
   watchedMovieIds: [],

@@ -36,9 +36,15 @@ export function MovieCard({ movie, status, onOpen, onSetStatus }: MovieCardProps
           ))}
         </div>
         {movie.providers && movie.providers.length > 0 && (
-          <div className="vod-row">
-            {movie.providers.slice(0, 3).map((provider) => (
-              <span key={`${movie.id}-${provider.id}`}>{provider.name}</span>
+          <div className="vod-row" aria-label={`Dostępne na: ${movie.providers.map((provider) => provider.name).join(", ")}`}>
+            {movie.providers.slice(0, 5).map((provider) => (
+              <span className="provider-icon" key={`${movie.id}-${provider.id}`} title={provider.name}>
+                {provider.logoPath ? (
+                  <img src={imageUrl(provider.logoPath, "w92")} alt="" />
+                ) : (
+                  <span>{providerInitials(provider.name)}</span>
+                )}
+              </span>
             ))}
           </div>
         )}
@@ -79,4 +85,14 @@ export function MovieCard({ movie, status, onOpen, onSetStatus }: MovieCardProps
       </div>
     </article>
   );
+}
+
+function providerInitials(name: string) {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 3)
+    .toUpperCase();
 }

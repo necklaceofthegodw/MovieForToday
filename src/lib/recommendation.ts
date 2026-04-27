@@ -20,6 +20,7 @@ export function scoreMovie(movie: MovieSummary, preferences: Preferences) {
 
   if (movie.runtime && movie.runtime <= preferences.maxRuntime) score += 8;
   if (movie.voteAverage >= preferences.minRating) score += 10;
+  if (movie.year && Number(movie.year) >= preferences.minReleaseYear) score += 6;
 
   score += Math.min(movie.voteCount / 1000, 10);
   score += movie.voteAverage;
@@ -35,7 +36,8 @@ export function filterHardBlocks(movies: MovieSummary[], preferences: Preference
     const blockedMovie =
       preferences.watchedMovieIds.includes(movie.id) || preferences.blockedMovieIds.includes(movie.id);
     const blockedGenre = movie.genreIds.some((genreId) => preferences.blockedGenreIds.includes(genreId));
-    return !blockedMovie && !blockedGenre;
+    const blockedYear = Boolean(movie.year && Number(movie.year) < preferences.minReleaseYear);
+    return !blockedMovie && !blockedGenre && !blockedYear;
   });
 }
 

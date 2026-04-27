@@ -96,6 +96,7 @@ export function mapDetail(movie: any): MovieDetail {
 export function buildDiscoverParams(preferences: Preferences, page: number, relaxation: number) {
   const providerIds = relaxation >= 1 ? [] : preferences.providerIds;
   const maxRuntime = relaxation >= 2 ? undefined : preferences.maxRuntime;
+  const minReleaseYear = relaxation >= 3 ? Math.max(1950, preferences.minReleaseYear - 10) : preferences.minReleaseYear;
   const minRating = relaxation >= 3 ? Math.max(5.5, preferences.minRating - 1) : preferences.minRating;
 
   return {
@@ -111,6 +112,7 @@ export function buildDiscoverParams(preferences: Preferences, page: number, rela
     with_watch_providers: providerIds.join("|") || undefined,
     "vote_average.gte": minRating,
     "vote_count.gte": relaxation >= 3 ? 80 : 250,
+    "primary_release_date.gte": `${minReleaseYear}-01-01`,
     "with_runtime.lte": maxRuntime,
   };
 }

@@ -45,6 +45,7 @@ export function PreferencePanel({ preferences, open, onboarding = false, onClose
   }, [actorQuery]);
 
   const canSave = useMemo(() => draft.favoriteGenreIds.length > 0, [draft.favoriteGenreIds.length]);
+  const currentYear = new Date().getFullYear();
 
   if (!open) return null;
 
@@ -181,6 +182,18 @@ export function PreferencePanel({ preferences, open, onboarding = false, onClose
         </div>
 
         <div className="preference-row">
+          <label>
+            Rok wydania
+            <span>od {draft.minReleaseYear}</span>
+            <input
+              type="range"
+              min="1950"
+              max={currentYear}
+              step="1"
+              value={draft.minReleaseYear}
+              onChange={(event) => setDraft({ ...draft, minReleaseYear: Number(event.target.value) })}
+            />
+          </label>
           <label>
             Maks. czas
             <span>{draft.maxRuntime} min</span>
