@@ -22,6 +22,17 @@ describe("recommendation scoring", () => {
     expect(score).toBeGreaterThan(45);
   });
 
+  it("prioritizes selected actor matches over plain genre matches", () => {
+    const actorMatch = { ...baseMovie, id: 1, genreIds: [35], matchedActors: [{ id: 31, name: "Tom Hanks" }] };
+    const genreMatch = { ...baseMovie, id: 2, genreIds: [18] };
+    const ranked = rankMovies(
+      [genreMatch, actorMatch],
+      { ...DEFAULT_PREFERENCES, favoriteGenreIds: [18], topActors: [{ id: 31, name: "Tom Hanks" }] },
+    );
+
+    expect(ranked[0].id).toBe(actorMatch.id);
+  });
+
   it("removes hard blocked genres and watched movies", () => {
     const ranked = rankMovies(
       [

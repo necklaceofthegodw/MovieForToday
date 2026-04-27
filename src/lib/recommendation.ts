@@ -20,7 +20,7 @@ export function scoreMovie(movie: MovieSummary, preferences: Preferences) {
   }
 
   const matchedActors = movie.matchedActors?.length ?? 0;
-  score += matchedActors * 18;
+  score += matchedActors * 42;
 
   const providerMatch = movie.providers?.some((provider) => preferences.providerIds.includes(provider.id));
   if (providerMatch) score += 14;

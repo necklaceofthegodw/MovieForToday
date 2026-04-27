@@ -54,18 +54,37 @@ export default async function handler(req: any, res: any) {
   try {
     const freshCandidates = new Map<number, MovieSummary>();
     const repeatCandidates = new Map<number, MovieSummary>();
+    const preferredActorIds = preferences.topActors.map((actor) => actor.id).slice(0, 8);
+
+    const storeCandidate = (movie: MovieSummary) => {
+      if (previousMovieIds.has(movie.id)) {
+        repeatCandidates.set(movie.id, movie);
+      } else {
+        freshCandidates.set(movie.id, movie);
+      }
+    };
+
+    if (preferredActorIds.length > 0) {
+      for (let relaxation = 0; relaxation < 4 && freshCandidates.size < 25; relaxation += 1) {
+        const pages = [1, 2].sort(() => Math.random() - 0.5);
+        for (const page of pages) {
+          const data = await tmdbFetch<{ results: any[] }>(
+            "/discover/movie",
+            buildDiscoverParams(preferences, page, relaxation, {
+              actorIds: preferredActorIds,
+              includeFavoriteGenres: false,
+            }),
+          );
+          data.results.map(mapMovie).forEach(storeCandidate);
+        }
+      }
+    }
 
     for (let relaxation = 0; relaxation < 4 && freshCandidates.size < 35; relaxation += 1) {
       const pages = [1, 2, 3].sort(() => Math.random() - 0.5);
       for (const page of pages) {
         const data = await tmdbFetch<{ results: any[] }>("/discover/movie", buildDiscoverParams(preferences, page, relaxation));
-        data.results.map(mapMovie).forEach((movie) => {
-          if (previousMovieIds.has(movie.id)) {
-            repeatCandidates.set(movie.id, movie);
-          } else {
-            freshCandidates.set(movie.id, movie);
-          }
-        });
+        data.results.map(mapMovie).forEach(storeCandidate);
       }
     }
 

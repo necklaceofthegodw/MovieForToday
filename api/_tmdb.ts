@@ -93,7 +93,12 @@ export function mapDetail(movie: any): MovieDetail {
   };
 }
 
-export function buildDiscoverParams(preferences: Preferences, page: number, relaxation: number) {
+type DiscoverOptions = {
+  actorIds?: number[];
+  includeFavoriteGenres?: boolean;
+};
+
+export function buildDiscoverParams(preferences: Preferences, page: number, relaxation: number, options: DiscoverOptions = {}) {
   const providerIds = relaxation >= 1 ? [] : preferences.providerIds;
   const maxRuntime = relaxation >= 2 ? undefined : preferences.maxRuntime;
   const minReleaseYear = relaxation >= 3 ? Math.max(1950, preferences.minReleaseYear - 10) : preferences.minReleaseYear;
@@ -107,7 +112,8 @@ export function buildDiscoverParams(preferences: Preferences, page: number, rela
     include_adult: false,
     include_video: false,
     page,
-    with_genres: preferences.favoriteGenreIds.join("|") || undefined,
+    with_genres: options.includeFavoriteGenres === false ? undefined : preferences.favoriteGenreIds.join("|") || undefined,
+    with_cast: options.actorIds?.join("|") || undefined,
     without_genres: preferences.blockedGenreIds.join(",") || undefined,
     with_watch_providers: providerIds.join("|") || undefined,
     "vote_average.gte": minRating,
