@@ -1,6 +1,6 @@
 # MovieForToday
 
-A PWA for picking 10 movies for today based on a short preference profile.
+A PWA for finding 10 movie picks from a quick taste profile.
 
 ## Stack
 

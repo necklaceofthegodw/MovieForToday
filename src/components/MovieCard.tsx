@@ -49,7 +49,7 @@ export function MovieCard({ movie, status, onOpen, onSetStatus }: MovieCardProps
           </div>
         )}
         {movie.matchedActors && movie.matchedActors.length > 0 && (
-          <p className="actor-match">Matched by: {movie.matchedActors.map((actor) => actor.name).join(", ")}</p>
+          <p className="actor-match">Actor match: {movie.matchedActors.map((actor) => actor.name).join(", ")}</p>
         )}
       </div>
       <div className="card-actions">

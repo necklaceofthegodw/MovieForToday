@@ -99,7 +99,7 @@ function App() {
       setMovies(response.movies);
       setMovieStatuses({});
       if (response.movies.length === 0) {
-        setNotice("I couldn't find movies for this profile. Loosen the VOD, runtime, or minimum rating filters.");
+        setNotice("No matches for this profile yet. Try adding streaming services or relaxing max playtime and minimum rating.");
       } else {
         setNotice(response.demo ? "Demo mode: add a TMDB token to fetch real recommendations." : "");
       }
@@ -123,7 +123,7 @@ function App() {
           </span>
           <div>
             <span className="eyebrow">MovieForToday</span>
-            <h1>10 movies for today</h1>
+            <h1>Today's 10 movie picks</h1>
           </div>
         </div>
         <button className="icon-button" type="button" onClick={() => setSettingsOpen(true)} aria-label="Open settings">
@@ -134,7 +134,7 @@ function App() {
       <section className="hero-panel">
         <button className="generate-button" type="button" onClick={generateMovies} disabled={loading}>
           <RefreshCcw size={22} />
-          {loading ? "Rolling the reel..." : "Pick 10 movies"}
+          {loading ? "Finding matches..." : "Find 10 movies"}
         </button>
       </section>
 

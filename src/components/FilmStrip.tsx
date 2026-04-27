@@ -138,8 +138,8 @@ export function FilmStrip({ movies, spinPhase, movieStatuses, onOpen, onSetMovie
       >
         <div className="empty-frame">
           <span className="projector-mark">FILM</span>
-          <h2>The reel is waiting for your first watch</h2>
-          <p>Set your profile, tap the main button, and get ten movies matched to your taste.</p>
+          <h2>Your first set of picks is waiting</h2>
+          <p>Build your taste profile, tap the main button, and get ten movies matched to your mood.</p>
         </div>
       </section>
     );

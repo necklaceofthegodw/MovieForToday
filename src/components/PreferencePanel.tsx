@@ -66,8 +66,8 @@ export function PreferencePanel({ preferences, open, onboarding = false, onClose
       <section className="preferences-panel">
         <div className="panel-header">
           <div>
-            <span className="eyebrow">Watch profile</span>
-            <h2>{onboarding ? "Set your taste" : "Preferences"}</h2>
+            <span className="eyebrow">Taste profile</span>
+            <h2>{onboarding ? "Build your taste profile" : "Taste profile"}</h2>
           </div>
           {!onboarding && (
             <button className="icon-button ghost" type="button" onClick={onClose} aria-label="Close settings">
@@ -99,7 +99,7 @@ export function PreferencePanel({ preferences, open, onboarding = false, onClose
         </div>
 
         <details className="preference-section quiet-section">
-          <summary>Disliked genres</summary>
+          <summary>Genres to avoid</summary>
           <div className="chip-grid">
             {POPULAR_GENRES.map((genre) => (
               <button
@@ -121,13 +121,13 @@ export function PreferencePanel({ preferences, open, onboarding = false, onClose
         </details>
 
         <div className="preference-section">
-          <h3>Top actors</h3>
+          <h3>Favorite actors</h3>
           <label className="search-box">
             <Search size={18} />
             <input
               value={actorQuery}
               onChange={(event) => setActorQuery(event.target.value)}
-              placeholder="Type an actor"
+              placeholder="Search for an actor"
             />
           </label>
           {(actorResults.length > 0 || searchingActors) && (
@@ -158,8 +158,8 @@ export function PreferencePanel({ preferences, open, onboarding = false, onClose
         </div>
 
         <div className="preference-section">
-          <h3>Streaming platforms</h3>
-          <div className="provider-grid" aria-label="Choose streaming platforms">
+          <h3>Where to watch</h3>
+          <div className="provider-grid" aria-label="Choose where to watch">
             {providers.map((provider) => (
               <button
                 key={`${provider.id}-${provider.name}`}
@@ -183,8 +183,8 @@ export function PreferencePanel({ preferences, open, onboarding = false, onClose
 
         <div className="preference-row">
           <label>
-            Release year
-            <span>from {draft.minReleaseYear}</span>
+            Released after
+            <span>{draft.minReleaseYear}</span>
             <input
               type="range"
               min="1950"
@@ -195,7 +195,7 @@ export function PreferencePanel({ preferences, open, onboarding = false, onClose
             />
           </label>
           <label>
-            Max runtime
+            Max playtime
             <span>{draft.maxRuntime} min</span>
             <input
               type="range"
@@ -207,7 +207,7 @@ export function PreferencePanel({ preferences, open, onboarding = false, onClose
             />
           </label>
           <label>
-            Min. rating
+            Minimum rating
             <span>{draft.minRating.toFixed(1)}</span>
             <input
               type="range"
