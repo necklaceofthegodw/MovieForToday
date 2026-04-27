@@ -538,6 +538,18 @@ a {
   font-weight: 800;
 }
 
+.actor-pill {
+  min-height: 32px;
+  max-width: min(100%, 190px);
+  padding: 0 9px 0 11px;
+  font-size: 0.82rem;
+  line-height: 1.1;
+}
+
+.actor-pill svg {
+  flex: 0 0 auto;
+}
+
 .chip.selected {
   background: var(--moss);
   color: var(--plum);
@@ -781,7 +793,8 @@ input[type="range"] {
   position: relative;
   display: grid;
   grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.1fr);
-  overflow: hidden;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .close-detail {
@@ -950,6 +963,10 @@ input[type="range"] {
 
   .detail-backdrop {
     max-height: 260px;
+  }
+
+  .detail-modal {
+    max-height: calc(100dvh - 28px);
   }
 }
 

@@ -1,4 +1,5 @@
 import type { MovieDetail, MovieReview, MovieSummary, Person, Preferences, WatchProvider } from "../src/types.js";
+import { fallbackFilmwebUrl } from "./_filmweb.js";
 
 const TMDB_BASE_URL = "https://api.themoviedb.org/3";
 const token = process.env.TMDB_READ_ACCESS_TOKEN;
@@ -86,7 +87,7 @@ export function mapDetail(movie: any): MovieDetail {
     ...mapMovie(movie),
     tagline: movie.tagline,
     trailerUrl: trailer?.key ? `https://www.youtube.com/watch?v=${trailer.key}` : undefined,
-    filmwebUrl: `https://www.filmweb.pl/search?q=${encodeURIComponent(movie.title)}`,
+    filmwebUrl: fallbackFilmwebUrl(movie.title, movie.release_date?.slice(0, 4)),
     reviews,
     providers: uniqueProviders.map(mapProvider),
   };

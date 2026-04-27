@@ -1,4 +1,5 @@
 import { sampleDetail } from "../_sample.js";
+import { resolveFilmwebUrl } from "../_filmweb.js";
 import { hasTmdbToken, mapDetail, tmdbFetch } from "../_tmdb.js";
 
 export default async function handler(req: any, res: any) {
@@ -14,7 +15,10 @@ export default async function handler(req: any, res: any) {
       language: "pl-PL",
       append_to_response: "videos,reviews,watch/providers,credits",
     });
-    return res.status(200).json({ movie: mapDetail(movie), demo: false });
+    const detail = mapDetail(movie);
+    detail.filmwebUrl = await resolveFilmwebUrl(detail.title, detail.year, detail.originalTitle);
+
+    return res.status(200).json({ movie: detail, demo: false });
   } catch (error) {
     return res.status(200).json({ movie: sampleDetail(id), demo: true, warning: String(error) });
   }

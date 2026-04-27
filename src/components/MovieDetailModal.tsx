@@ -8,6 +8,10 @@ type MovieDetailModalProps = {
   onClose: () => void;
 };
 
+function fallbackFilmwebUrl(movie: MovieSummary) {
+  return `https://www.filmweb.pl/films/search?q=${encodeURIComponent([movie.title, movie.year].filter(Boolean).join(" "))}`;
+}
+
 export function MovieDetailModal({ movie, onClose }: MovieDetailModalProps) {
   const [detail, setDetail] = useState<MovieDetail | null>(null);
   const [loading, setLoading] = useState(false);
@@ -21,7 +25,7 @@ export function MovieDetailModal({ movie, onClose }: MovieDetailModalProps) {
       .catch(() =>
         setDetail({
           ...movie,
-          filmwebUrl: `https://www.filmweb.pl/search?q=${encodeURIComponent(movie.title)}`,
+          filmwebUrl: fallbackFilmwebUrl(movie),
           reviews: [],
         }),
       )
@@ -80,7 +84,7 @@ export function MovieDetailModal({ movie, onClose }: MovieDetailModalProps) {
             )}
             <a
               className="secondary-button"
-              href={detail?.filmwebUrl || `https://www.filmweb.pl/search?q=${encodeURIComponent(movie.title)}`}
+              href={detail?.filmwebUrl || fallbackFilmwebUrl(movie)}
               target="_blank"
               rel="noreferrer"
             >

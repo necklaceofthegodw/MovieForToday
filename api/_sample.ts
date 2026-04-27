@@ -226,7 +226,7 @@ export function sampleDetail(id: number): MovieDetail {
     ...movie,
     tagline: "Dobry wybór na dzisiejszy seans.",
     trailerUrl: "https://www.youtube.com/results?search_query=" + encodeURIComponent(`${movie.title} trailer`),
-    filmwebUrl: "https://www.filmweb.pl/search?q=" + encodeURIComponent(movie.title),
+    filmwebUrl: "https://www.filmweb.pl/films/search?q=" + encodeURIComponent([movie.title, movie.year].filter(Boolean).join(" ")),
     reviews: [
       {
         id: "demo-review-1",
