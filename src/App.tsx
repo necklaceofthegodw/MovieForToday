@@ -1,5 +1,5 @@
 import { Film, RefreshCcw, Settings } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FilmStrip } from "./components/FilmStrip";
 import { MovieDetailModal } from "./components/MovieDetailModal";
 import { PreferencePanel } from "./components/PreferencePanel";
@@ -19,10 +19,27 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [spinPhase, setSpinPhase] = useState<SpinPhase>("idle");
   const [notice, setNotice] = useState("");
+  const selectedMovieRef = useRef<MovieSummary | null>(null);
+  const movieHistoryOpenRef = useRef(false);
 
   useEffect(() => {
     savePreferences(preferences);
   }, [preferences]);
+
+  useEffect(() => {
+    selectedMovieRef.current = selectedMovie;
+  }, [selectedMovie]);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      if (!selectedMovieRef.current) return;
+      movieHistoryOpenRef.current = false;
+      setSelectedMovie(null);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
 
   useEffect(() => {
     saveLastResults(movies);
@@ -43,6 +60,25 @@ function App() {
       }
       return next;
     });
+  };
+
+  const openMovie = (movie: MovieSummary) => {
+    setSelectedMovie(movie);
+
+    if (!window.history.state?.movieModal) {
+      window.history.pushState({ ...window.history.state, movieModal: true, movieId: movie.id }, "", window.location.href);
+      movieHistoryOpenRef.current = true;
+    }
+  };
+
+  const closeMovie = () => {
+    if (movieHistoryOpenRef.current && window.history.state?.movieModal) {
+      window.history.back();
+      return;
+    }
+
+    movieHistoryOpenRef.current = false;
+    setSelectedMovie(null);
   };
 
   const generateMovies = async () => {
@@ -108,7 +144,7 @@ function App() {
         movies={movies}
         spinPhase={spinPhase}
         movieStatuses={movieStatuses}
-        onOpen={setSelectedMovie}
+        onOpen={openMovie}
         onSetMovieStatus={setVisibleMovieStatus}
       />
 
@@ -123,7 +159,7 @@ function App() {
         }}
       />
 
-      <MovieDetailModal movie={selectedMovie} onClose={() => setSelectedMovie(null)} />
+      <MovieDetailModal movie={selectedMovie} onClose={closeMovie} />
     </main>
   );
 }
