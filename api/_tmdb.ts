@@ -59,7 +59,7 @@ export function mapMovie(movie: any): MovieSummary {
     title: movie.title,
     originalTitle: movie.original_title,
     year: movie.release_date?.slice(0, 4),
-    overview: movie.overview || "Brak polskiego opisu w TMDB.",
+    overview: movie.overview || "No English overview is available in TMDB.",
     posterPath: movie.poster_path,
     backdropPath: movie.backdrop_path,
     voteAverage: movie.vote_average ?? 0,
@@ -100,7 +100,7 @@ export function buildDiscoverParams(preferences: Preferences, page: number, rela
   const minRating = relaxation >= 3 ? Math.max(5.5, preferences.minRating - 1) : preferences.minRating;
 
   return {
-    language: "pl-PL",
+    language: "en-US",
     region: "PL",
     watch_region: "PL",
     sort_by: "popularity.desc",

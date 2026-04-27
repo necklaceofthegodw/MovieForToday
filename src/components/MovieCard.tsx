@@ -17,9 +17,9 @@ export function MovieCard({ movie, status, onOpen, onSetStatus }: MovieCardProps
 
   return (
     <article className={`movie-frame ${isWatched ? "is-watched" : ""} ${isBlocked ? "is-blocked" : ""}`}>
-      {(isWatched || isBlocked) && <span className="movie-state-badge">{isWatched ? "Obejrzany" : "Odrzucony"}</span>}
+      {(isWatched || isBlocked) && <span className="movie-state-badge">{isWatched ? "Watched" : "Rejected"}</span>}
       <button className="poster-button" type="button" onClick={() => onOpen(movie)}>
-        {poster ? <img src={poster} alt={`Plakat filmu ${movie.title}`} /> : <div className="poster-fallback">{movie.title}</div>}
+        {poster ? <img src={poster} alt={`${movie.title} poster`} /> : <div className="poster-fallback">{movie.title}</div>}
       </button>
       <div className="movie-copy">
         <div className="movie-title-row">
@@ -36,7 +36,7 @@ export function MovieCard({ movie, status, onOpen, onSetStatus }: MovieCardProps
           ))}
         </div>
         {movie.providers && movie.providers.length > 0 && (
-          <div className="vod-row" aria-label={`Dostępne na: ${movie.providers.map((provider) => provider.name).join(", ")}`}>
+          <div className="vod-row" aria-label={`Available on: ${movie.providers.map((provider) => provider.name).join(", ")}`}>
             {movie.providers.slice(0, 5).map((provider) => (
               <span className="provider-icon" key={`${movie.id}-${provider.id}`} title={provider.name}>
                 {provider.logoPath ? (
@@ -49,7 +49,7 @@ export function MovieCard({ movie, status, onOpen, onSetStatus }: MovieCardProps
           </div>
         )}
         {movie.matchedActors && movie.matchedActors.length > 0 && (
-          <p className="actor-match">Pasuje przez: {movie.matchedActors.map((actor) => actor.name).join(", ")}</p>
+          <p className="actor-match">Matched by: {movie.matchedActors.map((actor) => actor.name).join(", ")}</p>
         )}
       </div>
       <div className="card-actions">
@@ -57,8 +57,8 @@ export function MovieCard({ movie, status, onOpen, onSetStatus }: MovieCardProps
           type="button"
           className="icon-button"
           onClick={() => onOpen(movie)}
-          aria-label={`Szczegoly filmu ${movie.title}`}
-          title="Szczegoly"
+          aria-label={`Movie details for ${movie.title}`}
+          title="Details"
         >
           <Info size={18} />
         </button>
@@ -66,9 +66,9 @@ export function MovieCard({ movie, status, onOpen, onSetStatus }: MovieCardProps
           type="button"
           className={`icon-button ${isWatched ? "active-positive" : ""}`}
           onClick={() => onSetStatus(isWatched ? null : "watched")}
-          aria-label={isWatched ? `Cofnij obejrzany: ${movie.title}` : `Oznacz ${movie.title} jako obejrzany`}
+          aria-label={isWatched ? `Undo watched: ${movie.title}` : `Mark ${movie.title} as watched`}
           aria-pressed={isWatched}
-          title={isWatched ? "Cofnij obejrzany" : "Oznacz jako obejrzany"}
+          title={isWatched ? "Undo watched" : "Mark as watched"}
         >
           <Check size={18} />
         </button>
@@ -76,9 +76,9 @@ export function MovieCard({ movie, status, onOpen, onSetStatus }: MovieCardProps
           type="button"
           className={`icon-button ${isBlocked ? "active-negative" : ""}`}
           onClick={() => onSetStatus(isBlocked ? null : "blocked")}
-          aria-label={isBlocked ? `Cofnij odrzucenie: ${movie.title}` : `Odrzuc film ${movie.title}`}
+          aria-label={isBlocked ? `Undo rejection: ${movie.title}` : `Reject ${movie.title}`}
           aria-pressed={isBlocked}
-          title={isBlocked ? "Cofnij odrzucenie" : "Odrzuc film"}
+          title={isBlocked ? "Undo rejection" : "Reject movie"}
         >
           <Ban size={18} />
         </button>

@@ -5,8 +5,8 @@ import { buildDiscoverParams, hasTmdbToken, mapMovie, mapProvider, mapPerson, tm
 
 async function enrichMovie(movie: MovieSummary, preferences: Preferences) {
   const [detail, credits, providers] = await Promise.all([
-    tmdbFetch<any>(`/movie/${movie.id}`, { language: "pl-PL" }).catch(() => null),
-    tmdbFetch<any>(`/movie/${movie.id}/credits`, { language: "pl-PL" }).catch(() => null),
+    tmdbFetch<any>(`/movie/${movie.id}`, { language: "en-US" }).catch(() => null),
+    tmdbFetch<any>(`/movie/${movie.id}/credits`, { language: "en-US" }).catch(() => null),
     tmdbFetch<any>(`/movie/${movie.id}/watch/providers`).catch(() => null),
   ]);
 

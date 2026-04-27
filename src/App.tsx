@@ -99,12 +99,12 @@ function App() {
       setMovies(response.movies);
       setMovieStatuses({});
       if (response.movies.length === 0) {
-        setNotice("Nie znalazłem filmów dla tego profilu. Poluzuj VOD, czas lub minimalną ocenę.");
+        setNotice("I couldn't find movies for this profile. Loosen the VOD, runtime, or minimum rating filters.");
       } else {
-        setNotice(response.demo ? "Tryb demo: dodaj token TMDB, żeby pobierać prawdziwe rekomendacje." : "");
+        setNotice(response.demo ? "Demo mode: add a TMDB token to fetch real recommendations." : "");
       }
     } catch (error) {
-      setNotice(error instanceof Error ? error.message : "Nie udało się wygenerować filmów.");
+      setNotice(error instanceof Error ? error.message : "Couldn't generate movies.");
     } finally {
       setSpinPhase("settling");
       window.setTimeout(() => {
@@ -123,10 +123,10 @@ function App() {
           </span>
           <div>
             <span className="eyebrow">MovieForToday</span>
-            <h1>10 filmów na dziś</h1>
+            <h1>10 movies for today</h1>
           </div>
         </div>
-        <button className="icon-button" type="button" onClick={() => setSettingsOpen(true)} aria-label="Otwórz ustawienia">
+        <button className="icon-button" type="button" onClick={() => setSettingsOpen(true)} aria-label="Open settings">
           <Settings size={21} />
         </button>
       </header>
@@ -134,7 +134,7 @@ function App() {
       <section className="hero-panel">
         <button className="generate-button" type="button" onClick={generateMovies} disabled={loading}>
           <RefreshCcw size={22} />
-          {loading ? "Kręcę taśmę..." : "Wybierz 10 filmów"}
+          {loading ? "Rolling the reel..." : "Pick 10 movies"}
         </button>
       </section>
 

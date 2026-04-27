@@ -38,15 +38,15 @@ export function MovieDetailModal({ movie, onClose }: MovieDetailModalProps) {
   const backdrop = imageUrl(active.backdropPath, "w1280");
 
   return (
-    <div className="overlay" role="dialog" aria-modal="true" aria-label={`Szczegóły filmu ${movie.title}`}>
+    <div className="overlay" role="dialog" aria-modal="true" aria-label={`Movie details for ${movie.title}`}>
       <section className="detail-modal">
-        <button className="icon-button close-detail" type="button" onClick={onClose} aria-label="Zamknij szczegóły">
+        <button className="icon-button close-detail" type="button" onClick={onClose} aria-label="Close details">
           <X size={20} />
         </button>
         {backdrop && <img className="detail-backdrop" src={backdrop} alt="" />}
         <div className="detail-content">
           <div>
-            <span className="eyebrow">Szczegóły filmu</span>
+            <span className="eyebrow">Movie details</span>
             <h2>{active.title}</h2>
             <p className="detail-meta">
               {[active.year, active.runtime ? `${active.runtime} min` : undefined].filter(Boolean).join(" • ")}
@@ -55,7 +55,7 @@ export function MovieDetailModal({ movie, onClose }: MovieDetailModalProps) {
               </span>
             </p>
           </div>
-          {loading ? <p>Ładuję pełne informacje...</p> : <p>{active.overview}</p>}
+          {loading ? <p>Loading full details...</p> : <p>{active.overview}</p>}
 
           <div className="mini-tags">
             {(active.genres || []).map((genre) => (
@@ -65,7 +65,7 @@ export function MovieDetailModal({ movie, onClose }: MovieDetailModalProps) {
 
           {detail?.reviews && detail.reviews.length > 0 && (
             <div className="reviews">
-              <h3>Recenzje</h3>
+              <h3>Reviews</h3>
               {detail.reviews.map((review) => (
                 <blockquote key={review.id}>
                   <strong>{review.author}</strong>
@@ -89,7 +89,7 @@ export function MovieDetailModal({ movie, onClose }: MovieDetailModalProps) {
               rel="noreferrer"
             >
               <ExternalLink size={18} />
-              Zobacz na Filmweb
+              View on Filmweb
             </a>
           </div>
         </div>

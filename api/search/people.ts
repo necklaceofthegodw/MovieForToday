@@ -13,13 +13,13 @@ export default async function handler(req: any, res: any) {
   try {
     const data = await tmdbFetch<{ results: any[] }>("/search/person", {
       query,
-      language: "pl-PL",
+      language: "en-US",
       include_adult: false,
       page: 1,
     });
 
     return res.status(200).json({ people: data.results.slice(0, 8).map(mapPerson), demo: false });
   } catch (error) {
-    return res.status(500).json({ error: "Nie udało się wyszukać aktorów.", details: String(error) });
+    return res.status(500).json({ error: "Couldn't search actors.", details: String(error) });
   }
 }

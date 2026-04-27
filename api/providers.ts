@@ -23,7 +23,7 @@ export default async function handler(_req: any, res: any) {
 
   try {
     const data = await tmdbFetch<{ results: any[] }>("/watch/providers/movie", {
-      language: "pl-PL",
+      language: "en-US",
       watch_region: "PL",
     });
     const providers = data.results

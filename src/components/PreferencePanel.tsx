@@ -62,22 +62,22 @@ export function PreferencePanel({ preferences, open, onboarding = false, onClose
   };
 
   return (
-    <div className="overlay" role="dialog" aria-modal="true" aria-label="Preferencje filmowe">
+    <div className="overlay" role="dialog" aria-modal="true" aria-label="Movie preferences">
       <section className="preferences-panel">
         <div className="panel-header">
           <div>
-            <span className="eyebrow">Profil seansu</span>
-            <h2>{onboarding ? "Ustaw swój gust" : "Preferencje"}</h2>
+            <span className="eyebrow">Watch profile</span>
+            <h2>{onboarding ? "Set your taste" : "Preferences"}</h2>
           </div>
           {!onboarding && (
-            <button className="icon-button ghost" type="button" onClick={onClose} aria-label="Zamknij ustawienia">
+            <button className="icon-button ghost" type="button" onClick={onClose} aria-label="Close settings">
               <X size={20} />
             </button>
           )}
         </div>
 
         <div className="preference-section">
-          <h3>Ulubione gatunki</h3>
+          <h3>Favorite genres</h3>
           <div className="chip-grid">
             {POPULAR_GENRES.map((genre) => (
               <button
@@ -99,7 +99,7 @@ export function PreferencePanel({ preferences, open, onboarding = false, onClose
         </div>
 
         <details className="preference-section quiet-section">
-          <summary>Nielubiane gatunki</summary>
+          <summary>Disliked genres</summary>
           <div className="chip-grid">
             {POPULAR_GENRES.map((genre) => (
               <button
@@ -121,18 +121,18 @@ export function PreferencePanel({ preferences, open, onboarding = false, onClose
         </details>
 
         <div className="preference-section">
-          <h3>TOP aktorzy</h3>
+          <h3>Top actors</h3>
           <label className="search-box">
             <Search size={18} />
             <input
               value={actorQuery}
               onChange={(event) => setActorQuery(event.target.value)}
-              placeholder="Wpisz aktora lub aktorkę"
+              placeholder="Type an actor"
             />
           </label>
           {(actorResults.length > 0 || searchingActors) && (
             <div className="search-results">
-              {searchingActors && <span className="muted">Szukam...</span>}
+              {searchingActors && <span className="muted">Searching...</span>}
               {actorResults.map((person) => (
                 <button key={person.id} type="button" onClick={() => addActor(person)} className="person-result">
                   {person.profilePath ? <img src={imageUrl(person.profilePath, "w185")} alt="" /> : <span />}
@@ -158,8 +158,8 @@ export function PreferencePanel({ preferences, open, onboarding = false, onClose
         </div>
 
         <div className="preference-section">
-          <h3>Platformy VOD</h3>
-          <div className="provider-grid" aria-label="Wybierz platformy VOD">
+          <h3>Streaming platforms</h3>
+          <div className="provider-grid" aria-label="Choose streaming platforms">
             {providers.map((provider) => (
               <button
                 key={`${provider.id}-${provider.name}`}
@@ -168,7 +168,7 @@ export function PreferencePanel({ preferences, open, onboarding = false, onClose
                 }`}
                 type="button"
                 title={provider.name}
-                aria-label={`Przełącz platformę ${provider.name}`}
+                aria-label={`Toggle ${provider.name}`}
                 aria-pressed={draft.providerIds.includes(provider.id)}
                 onClick={() => setDraft({ ...draft, providerIds: toggleNumber(draft.providerIds, provider.id) })}
               >
@@ -183,8 +183,8 @@ export function PreferencePanel({ preferences, open, onboarding = false, onClose
 
         <div className="preference-row">
           <label>
-            Rok wydania
-            <span>od {draft.minReleaseYear}</span>
+            Release year
+            <span>from {draft.minReleaseYear}</span>
             <input
               type="range"
               min="1950"
@@ -195,7 +195,7 @@ export function PreferencePanel({ preferences, open, onboarding = false, onClose
             />
           </label>
           <label>
-            Maks. czas
+            Max runtime
             <span>{draft.maxRuntime} min</span>
             <input
               type="range"
@@ -207,7 +207,7 @@ export function PreferencePanel({ preferences, open, onboarding = false, onClose
             />
           </label>
           <label>
-            Min. ocena
+            Min. rating
             <span>{draft.minRating.toFixed(1)}</span>
             <input
               type="range"
@@ -226,7 +226,7 @@ export function PreferencePanel({ preferences, open, onboarding = false, onClose
           </button>
           <button className="primary-button" type="button" disabled={!canSave} onClick={save}>
             <Settings2 size={20} />
-            Zapisz profil
+            Save profile
           </button>
         </div>
       </section>

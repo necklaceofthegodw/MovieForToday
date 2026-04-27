@@ -1,7 +1,7 @@
 {
   "name": "MovieForToday",
   "short_name": "MovieToday",
-  "description": "Jednym kliknięciem wybierz 10 filmów na dzisiaj.",
+  "description": "Pick 10 movies for today with one click.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#382633",

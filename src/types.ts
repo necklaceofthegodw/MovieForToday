@@ -75,16 +75,16 @@ export const DEFAULT_PREFERENCES: Preferences = {
 };
 
 export const POPULAR_GENRES: Genre[] = [
-  { id: 28, name: "Akcja" },
-  { id: 12, name: "Przygodowy" },
-  { id: 16, name: "Animacja" },
-  { id: 35, name: "Komedia" },
-  { id: 80, name: "Kryminał" },
-  { id: 18, name: "Dramat" },
+  { id: 28, name: "Action" },
+  { id: 12, name: "Adventure" },
+  { id: 16, name: "Animation" },
+  { id: 35, name: "Comedy" },
+  { id: 80, name: "Crime" },
+  { id: 18, name: "Drama" },
   { id: 27, name: "Horror" },
-  { id: 10749, name: "Romans" },
+  { id: 10749, name: "Romance" },
   { id: 878, name: "Sci-Fi" },
   { id: 53, name: "Thriller" },
   { id: 14, name: "Fantasy" },
-  { id: 9648, name: "Tajemnica" },
+  { id: 9648, name: "Mystery" },
 ];

@@ -10,7 +10,7 @@ async function parseResponse<T>(response: Response): Promise<T> {
 
   if (!response.ok) {
     const body = await response.json().catch(() => ({}));
-    throw new Error(body.error || "Nie udało się pobrać danych.");
+    throw new Error(body.error || "Couldn't fetch data.");
   }
   return response.json() as Promise<T>;
 }
@@ -40,7 +40,7 @@ export async function searchPeople(query: string) {
               {
                 id: demoPersonId(normalizedQuery),
                 name: toTitleCase(normalizedQuery),
-                knownFor: "Wpis demo, podmień token TMDB dla prawdziwych wyników",
+                knownFor: "Demo entry, add a TMDB token for real results",
               },
             ],
       demo: true,

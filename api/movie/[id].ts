@@ -12,7 +12,7 @@ export default async function handler(req: any, res: any) {
 
   try {
     const movie = await tmdbFetch<any>(`/movie/${id}`, {
-      language: "pl-PL",
+      language: "en-US",
       append_to_response: "videos,reviews,watch/providers,credits",
     });
     const detail = mapDetail(movie);
